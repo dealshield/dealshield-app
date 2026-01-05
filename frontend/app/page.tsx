@@ -129,11 +129,11 @@ export default function Home() {
               </button>
             </Link>
             
-            {/* Mobile-only $DSHIELD Token Button */}
-            <Link href="/token" className="w-full sm:hidden">
-              <button className="w-full px-8 py-4 bg-gradient-to-r from-[#00d4ff]/10 to-[#7042f8]/10 text-[#00d4ff] border border-[#00d4ff]/30 rounded-xl font-bold hover:bg-[#00d4ff]/20 transition-all shadow-[0_0_15px_rgba(0,212,255,0.2)]">
-                $DSHIELD Token
-              </button>
+            {/* Mobile-only $DSHIELD Token Link */}
+            <Link href="/token" className="w-full sm:hidden text-center mt-2">
+              <span className="text-[#00d4ff] font-bold text-sm hover:text-[#7042f8] transition-colors underline underline-offset-4">
+                View $DSHIELD Token →
+              </span>
             </Link>
           </div>
         </div>

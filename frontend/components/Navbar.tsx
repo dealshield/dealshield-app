@@ -100,10 +100,10 @@ export const Navbar = () => {
 
   return (
     <nav className="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
-      <div className="container mx-auto px-6 md:px-20 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-20 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group relative">
           <div className="absolute -inset-2 bg-gradient-to-r from-[#7042f8] to-[#00d4ff] opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500 rounded-full"></div>
-          <span className="relative text-2xl font-bold tracking-tight text-white transition-colors">
+          <span className="relative text-xl md:text-2xl font-bold tracking-tight text-white transition-colors">
             Deal<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00d4ff] to-[#7042f8]">Shield</span>
           </span>
         </Link>
@@ -122,8 +122,8 @@ export const Navbar = () => {
           </div>
         )}
 
-        <div className="flex items-center gap-5">
-          <Link href="/token" className="flex items-center gap-2 text-sm font-bold text-[#00d4ff] hover:text-[#7042f8] transition-colors">
+        <div className="flex items-center gap-2 md:gap-5">
+          <Link href="/token" className="hidden sm:flex items-center gap-2 text-sm font-bold text-[#00d4ff] hover:text-[#7042f8] transition-colors">
             $DSHIELD
           </Link>
           <NotificationBell />

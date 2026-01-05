@@ -94,9 +94,9 @@ export default function Home() {
         <div className="absolute bottom-[20%] right-[-20%] w-[500px] h-[500px] bg-[#00d4ff]/30 rounded-full blur-[120px] opacity-40 mix-blend-screen z-0 animate-pulse-slow delay-1000"></div>
 
         <div className="relative z-20 container mx-auto px-6 flex flex-col items-center justify-center text-center">
-          <div className="py-[8px] px-[15px] border border-[#7042f8]/50 rounded-[15px] bg-[#030014]/50 backdrop-blur-md mb-6 animate-slide-down" style={{animationFillMode: 'forwards', animationDelay: '0.2s'}}>
-            <span className="text-[#00d4ff] text-[13px] font-medium tracking-wide uppercase flex items-center gap-2">
-              <Zap className="w-4 h-4 text-[#7042f8]" /> 
+          <div className="py-[8px] px-[15px] border border-[#7042f8]/50 rounded-[15px] bg-[#030014]/50 backdrop-blur-md mb-6 animate-slide-down max-w-[90vw]" style={{animationFillMode: 'forwards', animationDelay: '0.2s'}}>
+            <span className="text-[#00d4ff] text-[11px] md:text-[13px] font-medium tracking-wide uppercase flex items-center justify-center gap-2 text-center">
+              <Zap className="w-3 h-3 md:w-4 md:h-4 text-[#7042f8] flex-shrink-0" /> 
               Decentralized Escrow Marketplace
             </span>
           </div>

@@ -1,10 +1,11 @@
 import { Connection, PublicKey } from "@solana/web3.js";
-import { Program, AnchorProvider, Idl, Wallet } from "@project-serum/anchor";
+import { Program, AnchorProvider, Idl } from "@project-serum/anchor";
 import idl from "./dealshield_idl.json";
 
 export const PROGRAM_ID = new PublicKey(process.env.NEXT_PUBLIC_PROGRAM_ID || "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
-export const getProgram = (connection: Connection, wallet: Wallet) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getProgram = (connection: Connection, wallet: any) => {
   const provider = new AnchorProvider(
     connection,
     wallet,

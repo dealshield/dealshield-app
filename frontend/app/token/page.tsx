@@ -1,6 +1,31 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ShieldCheck, Coins, TrendingUp, Flame, Users, Zap, Lock } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Coins, Flame, Users } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "$DSHIELD Token | DealShield",
+  description: "Utility and governance token powering the DealShield ecosystem.",
+  openGraph: {
+    title: "$DSHIELD Token | DealShield",
+    description: "Utility and governance token powering the DealShield ecosystem.",
+    images: [
+      {
+        url: "/x-card-dshield.png",
+        width: 1200,
+        height: 630,
+        alt: "$DSHIELD Token",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "$DSHIELD Token | DealShield",
+    description: "Utility and governance token powering the DealShield ecosystem.",
+    images: ["/x-card-dshield.png"],
+  },
+};
 
 export default function TokenPage() {
   return (
@@ -160,9 +185,9 @@ export default function TokenPage() {
                       ROADMAP Q1 2025
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-4">Launch Details & Airdrops</h3>
-                    <p className="text-gray-400 mb-8 leading-relaxed">
-                      Token launch details, airdrops for early users, and staking pools are on the way. Don't miss the snapshot.
-                    </p>
+                      <p className="text-gray-400 mb-8 leading-relaxed">
+                      Token launch details, airdrops for early users, and staking pools are on the way. Don’t miss the snapshot.
+                      </p>
                     <a 
                       href="https://x.com/dealshieldsol" 
                       target="_blank" 
@@ -181,5 +206,3 @@ export default function TokenPage() {
     </div>
   );
 }
-
-

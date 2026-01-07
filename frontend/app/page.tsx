@@ -10,10 +10,22 @@ import { supabase } from "@/utils/supabase/client";
 import { getPreferredCategory } from "@/utils/userPreferences";
 import { checkMissedDeliveries } from "@/utils/checkMissedDeliveries";
 import Starfield from "@/components/Starfield";
+import { Loader } from "@/components/Loader";
+import { useLoading } from "@/context/LoadingContext";
+import { useLayoutEffect } from "react";
 
 export default function Home() {
+  const { isLoading, setIsLoading } = useLoading();
   const [listings, setListings] = useState<any[]>([]);
   const [personalizationLabel, setPersonalizationLabel] = useState<string>("Featured Listings");
+
+  useLayoutEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [setIsLoading]);
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -68,6 +80,10 @@ export default function Home() {
 
     fetchListings();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col gap-20 pb-20">

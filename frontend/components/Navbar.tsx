@@ -10,6 +10,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useUserBalance } from "@/hooks/useUserBalance";
 import { supabase } from "@/utils/supabase/client";
 import { NotificationBell } from "./NotificationBell";
+import { useLoading } from "@/context/LoadingContext";
 
 const WalletMultiButton = dynamic(
   () => import("@solana/wallet-adapter-react-ui").then((mod) => mod.WalletMultiButton),
@@ -17,6 +18,7 @@ const WalletMultiButton = dynamic(
 );
 
 export const Navbar = () => {
+  const { isLoading } = useLoading();
   const router = useRouter();
   const pathname = usePathname();
   const { connected, publicKey } = useWallet();
@@ -94,7 +96,7 @@ export const Navbar = () => {
     }
   }, [connected, publicKey]);
 
-  if (pathname?.startsWith('/admin')) {
+  if (pathname?.startsWith('/admin') || isLoading) {
     return null;
   }
 

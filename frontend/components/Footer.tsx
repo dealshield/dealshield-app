@@ -1,12 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useLoading } from "@/context/LoadingContext";
 
 export const Footer = () => {
+  const { isLoading } = useLoading();
   const pathname = usePathname();
 
-  // Do not render footer on admin pages
-  if (pathname?.startsWith("/admin")) {
+  // Do not render footer on admin pages or when loading
+  if (pathname?.startsWith("/admin") || isLoading) {
     return null;
   }
 

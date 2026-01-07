@@ -5,6 +5,7 @@ import { WalletContextProvider } from "@/components/WalletContextProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import SmoothScrolling from "@/components/SmoothScrolling";
+import { LoadingProvider } from "@/context/LoadingContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,16 +45,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-[#030014] text-white antialiased overflow-y-scroll overflow-x-hidden`}>
-        <SmoothScrolling>
-          <div className="stars-bg" />
-          <WalletContextProvider>
-            <Navbar />
-            <main className="min-h-screen relative z-10">
-              {children}
-            </main>
-            <Footer />
-          </WalletContextProvider>
-        </SmoothScrolling>
+        <LoadingProvider>
+          <SmoothScrolling>
+            <div className="stars-bg" />
+            <WalletContextProvider>
+              <Navbar />
+              <main className="min-h-screen relative z-10">
+                {children}
+              </main>
+              <Footer />
+            </WalletContextProvider>
+          </SmoothScrolling>
+        </LoadingProvider>
       </body>
     </html>
   );

@@ -66,7 +66,7 @@ export default function TokenPage() {
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-4">
                <div className="flex items-center gap-2 px-6 py-3 bg-[#0a0f1c] border border-white/10 rounded-xl">
                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                 <span className="text-gray-400 text-sm">Live on Solana</span>
+                 <span className="text-gray-400 text-sm">Will be live on Solana</span>
                </div>
                <div className="flex items-center gap-2 px-6 py-3 bg-[#0a0f1c] border border-white/10 rounded-xl">
                  <ShieldCheck className="w-4 h-4 text-[#7042f8]" />

@@ -879,7 +879,7 @@ export default function ProductDetails() {
 
 
           {/* Review Modal */}
-          {isReviewModalOpen && (
+          {isReviewModalOpen && typeof document !== 'undefined' && createPortal(
             <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
               <div className="glass-card bg-[#030014] rounded-3xl p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-200 border border-white/10">
                 <div className="text-center mb-6">
@@ -932,7 +932,8 @@ export default function ProductDetails() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div>,
+            document.body
           )}
 
           <div className="flex flex-col gap-4">
@@ -1181,7 +1182,7 @@ export default function ProductDetails() {
       )}
       
       {/* Buy Modal */}
-      {isBuyModalOpen && (
+      {isBuyModalOpen && typeof document !== 'undefined' && createPortal(
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
           onClick={() => setIsBuyModalOpen(false)}
@@ -1303,11 +1304,12 @@ export default function ProductDetails() {
               </button>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Report Modal */}
-      {isReportModalOpen && (
+      {isReportModalOpen && typeof document !== 'undefined' && createPortal(
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
           onClick={() => setIsReportModalOpen(false)}
@@ -1372,7 +1374,8 @@ export default function ProductDetails() {
               </button>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Image Modal */}

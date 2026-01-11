@@ -17,6 +17,7 @@ import { useLayoutEffect } from "react";
 export default function Home() {
   const { isLoading, setIsLoading } = useLoading();
   const [listings, setListings] = useState<any[]>([]);
+  const [otherListings, setOtherListings] = useState<any[]>([]);
   const [personalizationLabel, setPersonalizationLabel] = useState<string>("Featured Listings");
 
   useLayoutEffect(() => {
@@ -52,6 +53,7 @@ export default function Home() {
       }
 
       const { data, error } = await query;
+      let currentListings: any[] = [];
 
       if (error) {
         console.error("Error fetching listings:", error);
@@ -70,10 +72,39 @@ export default function Home() {
               .neq("status", "sold")
               .order("created_at", { ascending: false })
               .limit(8);
-             setListings(fallbackData || []);
+             currentListings = fallbackData || [];
+             setListings(currentListings);
              setPersonalizationLabel("Featured Listings");
         } else {
-             setListings(visibleListings);
+             currentListings = visibleListings;
+             setListings(currentListings);
+        }
+
+        // Fetch "Others" (Listings not in the main list)
+        if (currentListings.length > 0) {
+          const excludedIds = currentListings.map(item => item.id);
+          const { data: othersData } = await supabase
+            .from("listings")
+            .select("*")
+            .neq("status", "deleted")
+            .neq("status", "sold")
+            .neq("status", "shadowed")
+            .not('id', 'in', `(${excludedIds.join(',')})`)
+            .order("created_at", { ascending: false })
+            .limit(12);
+            
+          setOtherListings(othersData || []);
+        } else {
+           // If main list is empty (very rare), just fetch latest as others
+           const { data: othersData } = await supabase
+            .from("listings")
+            .select("*")
+            .neq("status", "deleted")
+            .neq("status", "sold")
+            .neq("status", "shadowed")
+            .order("created_at", { ascending: false })
+            .limit(12);
+           setOtherListings(othersData || []);
         }
       }
     };
@@ -230,6 +261,31 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* Others Section */}
+      {otherListings.length > 0 && (
+        <section className="container mx-auto px-6 md:px-20 py-10 pt-0">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+              Others
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {otherListings.map((item) => (
+              <ProductCard 
+                key={item.id} 
+                id={item.id}
+                title={item.title}
+                price={item.price}
+                image={item.image_url || "https://via.placeholder.com/400"}
+                seller={item.seller_wallet}
+                category={item.category}
+                status={item.status}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

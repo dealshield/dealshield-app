@@ -463,15 +463,21 @@ export default function ProductDetails() {
       console.log("Transaction signature", tx);
       await connection.confirmTransaction(tx, "confirmed");
 
+      // Prepare order details based on delivery method
+      const isPickup = product.delivery_method === "Pickup";
+      const finalBuyerName = isPickup ? "Pickup Buyer" : orderDetails.name;
+      const finalShippingAddress = isPickup ? (product.pickup_location || "Pickup Location") : orderDetails.address;
+      const finalPhoneNumber = isPickup ? "N/A" : orderDetails.phone;
+
       // 2. Create Order in Supabase
       const { error } = await supabase
         .from('orders')
         .insert({
           listing_id: id,
           buyer_wallet: publicKey!.toString(),
-          buyer_name: orderDetails.name,
-          shipping_address: orderDetails.address,
-          phone_number: orderDetails.phone
+          buyer_name: finalBuyerName,
+          shipping_address: finalShippingAddress,
+          phone_number: finalPhoneNumber
           // tx_signature: tx // Add if column exists
         });
 
@@ -495,7 +501,7 @@ export default function ProductDetails() {
         .from('notifications')
         .insert({
           user_wallet: product.seller_wallet,
-          message: `New order received for "${product.title}" from ${orderDetails.name}`,
+          message: `New order received for "${product.title}" from ${finalBuyerName}`,
           type: 'new_order',
           link: '/profile'
         });
@@ -509,9 +515,9 @@ export default function ProductDetails() {
       setOrder({ 
         listing_id: id,
         buyer_wallet: publicKey!.toString(),
-        buyer_name: orderDetails.name,
-        shipping_address: orderDetails.address,
-        phone_number: orderDetails.phone
+        buyer_name: finalBuyerName,
+        shipping_address: finalShippingAddress,
+        phone_number: finalPhoneNumber
       });
       setTransactionState('pending');
       setIsBuyModalOpen(false);
@@ -1177,18 +1183,18 @@ export default function ProductDetails() {
       {/* Buy Modal */}
       {isBuyModalOpen && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
           onClick={() => setIsBuyModalOpen(false)}
         >
           <div 
-            className="glass-card bg-[#030014] rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden border border-white/10" 
+            className="glass-card bg-[#030014] rounded-3xl p-8 max-w-md w-full shadow-2xl relative max-h-[90vh] overflow-y-auto border border-white/10 custom-scrollbar" 
             onClick={e => e.stopPropagation()}
           >
-             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#00d4ff] to-[#7042f8] shadow-[0_0_10px_rgba(0,212,255,0.5)]"></div>
+             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#00d4ff] to-[#7042f8] shadow-[0_0_10px_rgba(0,212,255,0.5)] z-10"></div>
             
             <button 
               onClick={() => setIsBuyModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-20"
             >
               <X className="w-6 h-6" />
             </button>
@@ -1231,46 +1237,50 @@ export default function ProductDetails() {
             )}
             
             <form onSubmit={handleOrderSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
-                <input 
-                  type="text" 
-                  required
-                  value={orderDetails.name}
-                  onChange={(e) => setOrderDetails({...orderDetails, name: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl bg-[#0a0f1c] border border-white/10 text-white focus:border-[#00d4ff] focus:ring-2 focus:ring-[#00d4ff]/20 outline-none transition-all placeholder-gray-600"
-                  placeholder="John Doe"
-                />
-              </div>
-              
-              <div className="bg-amber-500/10 p-3 rounded-lg border border-amber-500/20 flex gap-2 text-amber-200 text-sm">
-                 <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-500" />
-                 <p>Please ensure you provide the correct shipping address to guarantee successful delivery.</p>
-              </div>
+              {product.delivery_method !== "Pickup" && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={orderDetails.name}
+                      onChange={(e) => setOrderDetails({...orderDetails, name: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-[#0a0f1c] border border-white/10 text-white focus:border-[#00d4ff] focus:ring-2 focus:ring-[#00d4ff]/20 outline-none transition-all placeholder-gray-600"
+                      placeholder="John Doe"
+                    />
+                  </div>
+                  
+                  <div className="bg-amber-500/10 p-3 rounded-lg border border-amber-500/20 flex gap-2 text-amber-200 text-sm">
+                     <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-amber-500" />
+                     <p>Please ensure you provide the correct shipping address to guarantee successful delivery.</p>
+                  </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Shipping Address</label>
-                <textarea 
-                  required
-                  value={orderDetails.address}
-                  onChange={(e) => setOrderDetails({...orderDetails, address: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl bg-[#0a0f1c] border border-white/10 text-white focus:border-[#00d4ff] focus:ring-2 focus:ring-[#00d4ff]/20 outline-none transition-all placeholder-gray-600"
-                  placeholder="123 Main St, City, Country"
-                  rows={3}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
-                <input 
-                  type="tel" 
-                  required
-                  value={orderDetails.phone}
-                  onChange={(e) => setOrderDetails({...orderDetails, phone: e.target.value})}
-                  className="w-full px-4 py-3 rounded-xl bg-[#0a0f1c] border border-white/10 text-white focus:border-[#00d4ff] focus:ring-2 focus:ring-[#00d4ff]/20 outline-none transition-all placeholder-gray-600"
-                  placeholder="+1 (555) 000-0000"
-                />
-              </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Shipping Address</label>
+                    <textarea 
+                      required
+                      value={orderDetails.address}
+                      onChange={(e) => setOrderDetails({...orderDetails, address: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-[#0a0f1c] border border-white/10 text-white focus:border-[#00d4ff] focus:ring-2 focus:ring-[#00d4ff]/20 outline-none transition-all placeholder-gray-600"
+                      placeholder="123 Main St, City, Country"
+                      rows={3}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      required
+                      value={orderDetails.phone}
+                      onChange={(e) => setOrderDetails({...orderDetails, phone: e.target.value})}
+                      className="w-full px-4 py-3 rounded-xl bg-[#0a0f1c] border border-white/10 text-white focus:border-[#00d4ff] focus:ring-2 focus:ring-[#00d4ff]/20 outline-none transition-all placeholder-gray-600"
+                      placeholder="+1 (555) 000-0000"
+                    />
+                  </div>
+                </>
+              )}
 
               <div className="bg-[#00d4ff]/10 p-4 rounded-xl flex items-start gap-3 text-blue-200 text-xs mt-4 border border-[#00d4ff]/20">
                 <ShieldCheck className="w-4 h-4 flex-shrink-0 mt-0.5 text-[#00d4ff]" />
@@ -1299,18 +1309,18 @@ export default function ProductDetails() {
       {/* Report Modal */}
       {isReportModalOpen && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200"
           onClick={() => setIsReportModalOpen(false)}
         >
           <div 
             className="glass-card bg-[#030014] rounded-3xl p-8 max-w-md w-full shadow-2xl relative overflow-hidden border border-white/10" 
             onClick={e => e.stopPropagation()}
           >
-             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-500 to-orange-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-500 to-orange-500 shadow-[0_0_10px_rgba(239,68,68,0.5)] z-10"></div>
             
             <button 
               onClick={() => setIsReportModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-20"
             >
               <X className="w-6 h-6" />
             </button>

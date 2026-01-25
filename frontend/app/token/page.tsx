@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ShieldCheck, Coins, Flame, Users } from "lucide-react";
+import { CopyableAddress } from "@/components/CopyableAddress";
 
 export const metadata: Metadata = {
   title: "$DSHIELD Token | DealShield",
@@ -66,7 +67,7 @@ export default function TokenPage() {
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-4">
                <div className="flex items-center gap-2 px-6 py-3 bg-[#0a0f1c] border border-white/10 rounded-xl">
                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                 <span className="text-gray-400 text-sm">Will be live on Solana</span>
+                 <span className="text-gray-400 text-sm">Live on Solana</span>
                </div>
                <div className="flex items-center gap-2 px-6 py-3 bg-[#0a0f1c] border border-white/10 rounded-xl">
                  <ShieldCheck className="w-4 h-4 text-[#7042f8]" />
@@ -133,12 +134,7 @@ export default function TokenPage() {
                 <span className="text-gray-400 text-sm">Decimals</span>
                 <span className="font-bold text-white">9</span>
               </div>
-              <div className="pt-2">
-                 <div className="text-xs text-gray-500 font-mono mb-1">Contract Address</div>
-                 <div className="text-xs text-gray-600 font-mono bg-white/5 p-2 rounded border border-white/5">
-                   [Coming Soon]
-                 </div>
-              </div>
+              <CopyableAddress address="DShieLdTokenContractAddress1111111111111111" />
             </div>
           </div>
         </div>

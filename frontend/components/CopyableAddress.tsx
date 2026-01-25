@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
-interface CopyableAddressProps {
+interface CopyableAddressProps { 
   address: string;
 }
 

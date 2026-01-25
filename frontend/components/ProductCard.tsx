@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, Trash2 } from "lucide-react";
-import { CopyAddress } from "./CopyAddress";
+import { CopyAddress } from "@/components/CopyAddress";
 import { getFirstImage } from "@/utils/imageHelper";
 import { supabase } from "@/utils/supabase/client";
 import { SolIcon } from "./SolIcon";

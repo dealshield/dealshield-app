@@ -134,7 +134,7 @@ export default function TokenPage() {
                 <span className="text-gray-400 text-sm">Decimals</span>
                 <span className="font-bold text-white">9</span>
               </div>
-              <CopyableAddress address="GWM5xM3BR9uiGMNJodjAF5XpcpMkzRnnUsKpxogzpump" />
+              <CopyableAddress address="COPY ADDRESS" />
             </div>
           </div>
         </div>

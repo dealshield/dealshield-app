@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ShieldCheck, Coins, Flame, Users } from "lucide-react";
-import { CopyableAddress } from "@/components/CopyableAddress";
+import { CopyableAddress } from "../../components/CopyableAddress";
 
 export const metadata: Metadata = {
   title: "$DSHIELD Token | DealShield",
